@@ -1,6 +1,9 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart' as materials;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:window_manager/window_manager.dart';
+
+import 'screens/home.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,10 +31,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const FluentApp(
+    return FluentApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+//      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
+      home: HomePage(),
     );
   }
 }
