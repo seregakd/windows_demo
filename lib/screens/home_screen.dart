@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart'hide MenuItem;
+import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 import 'dart:async';
@@ -13,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _MyHomePageState extends State<HomeScreen> with WindowListener, TrayListener{
   int _counter = 0;
+  bool _isEnabledStartup = false;
 
   @override
   void initState() {
@@ -45,6 +47,7 @@ class _MyHomePageState extends State<HomeScreen> with WindowListener, TrayListen
             TextButton(
               onPressed: () {
                 _addTray();
+//                windowManager.setIgnoreMouseEvents(true);
               },
               child: const Text('add tray')
             ),
@@ -54,6 +57,30 @@ class _MyHomePageState extends State<HomeScreen> with WindowListener, TrayListen
                   trayManager.destroy();
                 },
                 child: const Text('del tray')
+            ),
+            const SizedBox(height: 10,),
+            Text(
+              'launchAtStartup = $_isEnabledStartup',
+            ),
+            TextButton(
+                onPressed: () async{
+                  // launchAtStartup.setup(
+                  //   appName: packageInfo.appName,
+                  //   appPath: Platform.resolvedExecutable,
+                  // );
+//                  String packageName = packageInfo.packageName;
+                  await launchAtStartup.enable();
+                  await _getIsEnabledStartup();
+                },
+                child: const Text('startup=true')
+            ),
+            const SizedBox(height: 10,),
+            TextButton(
+                onPressed: () async{
+                  await launchAtStartup.disable();
+                  await _getIsEnabledStartup();
+                },
+                child: const Text('startup=false')
             ),
             Text(
               '$_counter',
@@ -72,7 +99,18 @@ class _MyHomePageState extends State<HomeScreen> with WindowListener, TrayListen
 
   void _init() async {
     await windowManager.setPreventClose(true);
+
+    await _getIsEnabledStartup();
+    if (_isEnabledStartup) {
+      await windowManager.hide();
+    }
+
     _addTray();
+  }
+
+  Future<void> _getIsEnabledStartup() async {
+    _isEnabledStartup = await launchAtStartup.isEnabled();
+    setState(() {});
   }
 
   void _getScreenshot() async {
@@ -105,7 +143,6 @@ class _MyHomePageState extends State<HomeScreen> with WindowListener, TrayListen
             }),
       ],
     );
-
     await trayManager.setContextMenu(trayMenu);
     await trayManager.setToolTip('demo_tray');
   }
@@ -119,4 +156,9 @@ class _MyHomePageState extends State<HomeScreen> with WindowListener, TrayListen
   void onTrayIconRightMouseDown() {
     trayManager.popUpContextMenu();
   }
+
+  // @override
+  // void onWindowEvent(String eventName) {
+  //   print('[WindowManager] onWindowEvent: $eventName');
+  // }
 }

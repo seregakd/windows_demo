@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart' as materials;
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:launch_at_startup/launch_at_startup.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'screens/home_2.dart';
@@ -22,6 +26,12 @@ void main() async{
     await windowManager.show();
     await windowManager.focus();
   });
+
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  LaunchAtStartup.instance.setup(
+    appName: packageInfo.appName,
+    appPath: Platform.resolvedExecutable,
+  );
 
   runApp(const MyApp());
 }
@@ -63,7 +73,10 @@ class MyApp extends StatelessWidget {
 //     titleBarStyle: TitleBarStyle.normal,
 //   );
 //   await windowManager.hide();
-//   windowManager.waitUntilReadyToShow(windowOptions, () async {});
+//   windowManager.waitUntilReadyToShow(windowOptions, () async {
+//     await windowManager.show();
+//     await windowManager.focus();
+//   });
 //
 //   runApp(const MyApp());
 // }
