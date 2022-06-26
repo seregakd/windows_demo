@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> with TrayListener {
 
   @override
   void dispose() {
-//    trayManager.removeListener(this);
+    trayManager.removeListener(this);
     super.dispose();
   }
 
@@ -105,12 +105,12 @@ class _HomePageState extends State<HomePage> with TrayListener {
                 await trayManager.setToolTip('tray_manager');
               },
             ),
-            PreferenceListItem(
-              title: Text('setTitle'),
-              onTap: () async {
-                await trayManager.setTitle('tray_manager');
-              },
-            ),
+            // PreferenceListItem(
+            //   title: Text('setTitle'),
+            //   onTap: () async {
+            //     await trayManager.setTitle('tray_manager');
+            //   },
+            // ),
             PreferenceListItem(
               title: Text('setContextMenu'),
               onTap: () async {
@@ -217,19 +217,19 @@ class _HomePageState extends State<HomePage> with TrayListener {
                 await trayManager.popUpContextMenu();
               },
             ),
-            PreferenceListItem(
-              title: Text('getBounds'),
-              onTap: () async {
-                Rect? bounds = await trayManager.getBounds();
-                if (bounds != null) {
-                  Size size = bounds.size;
-                  Offset origin = bounds.topLeft;
-                  BotToast.showText(
-                    text: '${size.toString()}\n${origin.toString()}',
-                  );
-                }
-              },
-            ),
+            // PreferenceListItem(
+            //   title: Text('getBounds'),
+            //   onTap: () async {
+            //     Rect? bounds = await trayManager.getBounds();
+            //     if (bounds != null) {
+            //       Size size = bounds.size;
+            //       Offset origin = bounds.topLeft;
+            //       BotToast.showText(
+            //         text: '${size.toString()}\n${origin.toString()}',
+            //       );
+            //     }
+            //   },
+            // ),
           ],
         ),
       ],
@@ -260,7 +260,7 @@ class _HomePageState extends State<HomePage> with TrayListener {
   @override
   void onTrayIconRightMouseDown() {
     print('onTrayIconRightMouseDown');
-    // trayManager.popUpContextMenu();
+    trayManager.popUpContextMenu();
   }
 
   @override
