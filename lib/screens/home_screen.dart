@@ -5,6 +5,8 @@ import 'package:window_manager/window_manager.dart';
 import 'dart:async';
 import 'dart:io';
 
+import '../utils/capture.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -81,6 +83,13 @@ class _MyHomePageState extends State<HomeScreen> with WindowListener, TrayListen
                   await _getIsEnabledStartup();
                 },
                 child: const Text('startup=false')
+            ),
+            const SizedBox(height: 10,),
+            TextButton(
+                onPressed: () async{
+                  createCapture();
+                },
+                child: const Text('get capture')
             ),
             Text(
               '$_counter',

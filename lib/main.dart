@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart' as materials;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:window_manager/window_manager.dart';
-
 import 'screens/home_2.dart';
 import 'screens/home_screen.dart';
 
