@@ -25,6 +25,7 @@ dependencies:
   package_info_plus: ^1.4.2
   keyboard_event: ^0.3.2
 #  screen_capturer: ^0.1.2
+  system_info2: ^2.0.4
 
 
 dev_dependencies:

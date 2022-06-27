@@ -1,3 +1,12 @@
+// SetWindowsHookExA function (winuser.h)
+// https://docs.microsoft.com/zh-cn/windows/win32/api/winuser/nf-winuser-setwindowshookexa?redirectedfrom=MSDN
+//
+// KeyboardProc callback function
+// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms644984(v=vs.85)
+//
+// MouseProc callback function
+// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms644988(v=vs.85)
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
