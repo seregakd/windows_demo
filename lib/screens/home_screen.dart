@@ -2,6 +2,7 @@ import 'package:flutter/material.dart'hide MenuItem;
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:windows_demo/utils/platform_channel.dart';
 import 'dart:async';
 import 'dart:io';
 
@@ -17,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _MyHomePageState extends State<HomeScreen> with WindowListener, TrayListener{
   int _counter = 0;
   bool _isEnabledStartup = false;
+  String _resultPlatformChannel = '';
 
   @override
   void initState() {
@@ -90,6 +92,21 @@ class _MyHomePageState extends State<HomeScreen> with WindowListener, TrayListen
                   createCapture();
                 },
                 child: const Text('get capture')
+            ),
+            const SizedBox(height: 10,),
+            TextButton(
+                onPressed: () async{
+                    _resultPlatformChannel = await AppPlatformChannel.add(
+                        10,
+                        _counter,
+                    );
+                    setState(() {});
+                },
+                child: const Text('use PlatformChannel')
+            ),
+            Text(
+              'resultPlatformChannel = $_resultPlatformChannel',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
               '$_counter',

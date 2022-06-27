@@ -4,6 +4,8 @@
 
 #include "flutter/generated_plugin_registrant.h"
 
+#include "custom_channel.cpp"
+
 FlutterWindow::FlutterWindow(const flutter::DartProject& project)
     : project_(project) {}
 
@@ -25,6 +27,10 @@ bool FlutterWindow::OnCreate() {
     return false;
   }
   RegisterPlugins(flutter_controller_->engine());
+
+  flutter::FlutterEngine *newEngine  = flutter_controller_->engine();
+  custom_channels::createChannelCalc x = custom_channels::createChannelCalc(newEngine);
+    
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
   return true;
 }
@@ -41,7 +47,7 @@ LRESULT
 FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
                               WPARAM const wparam,
                               LPARAM const lparam) noexcept {
-  // Give Flutter, including plugins, an opportunity to handle window messages.
+      // Give Flutter, including plugins, an opportunity to handle window messages.
   if (flutter_controller_) {
     std::optional<LRESULT> result =
         flutter_controller_->HandleTopLevelWindowProc(hwnd, message, wparam,
