@@ -9,6 +9,13 @@
 #include <flutter/encodable_value.h>
 #include <../standard_codec.cc>
 
+//#include "TCHAR.h"
+//#include "pdh.h"
+
+//static PDH_HQUERY cpuQuery;
+//static PDH_HCOUNTER cpuTotal;
+#include "windows.h"
+
 namespace custom_channels {
     class createChannelCalc {
         public:
@@ -36,7 +43,7 @@ namespace custom_channels {
                try {
                  // The add method has been called
                  handleAdd(call,result);
-               }catch (...) {
+               } catch (...) {
                  (*result)->Error("An error was caught");
                }
             }
@@ -61,11 +68,23 @@ namespace custom_channels {
                int a = static_cast<int>(std::get<int>((a_it)));
                int b = static_cast<int>(std::get<int>((b_it)));
 
-               flutter::EncodableValue res ; // final result variable
+               flutter::EncodableValue res; // final result variable
                if(a && b){
                  // convert to string since we send back the result as string
                  std::string c = std::to_string(a+b);
-                 res = flutter::EncodableValue("Sum is: " + c);
+               //  res = flutter::EncodableValue("Sum is: " + c);
+
+                    MEMORYSTATUSEX memInfo;
+                    memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+                    GlobalMemoryStatusEx(&memInfo);
+                    DWORDLONG totalPhysMem = memInfo.ullTotalPhys / 1000000000;
+                    DWORDLONG physMemUsed = (memInfo.ullTotalPhys - memInfo.ullAvailPhys) / 1000000000;
+
+                 std::string totalMem = std::to_string(totalPhysMem);
+                 std::string physUsed = std::to_string(physMemUsed);
+
+                 res = flutter::EncodableValue("totalPhysMem: " + totalMem + ". physMemUsed: " + physUsed);
+
                 // send positive result
                  (*resPointer)->Success(res);
                }else{
@@ -73,6 +92,21 @@ namespace custom_channels {
                  (*resPointer)->Error("Error occured");
                }
         }
+
+//        void init(){
+//            PdhOpenQuery(NULL, NULL, &cpuQuery);
+//            // You can also use L"\\Processor(*)\\% Processor Time" and get individual CPU values with PdhGetFormattedCounterArray()
+//            PdhAddEnglishCounter(cpuQuery, L"\\Processor(_Total)\\% Processor Time", NULL, &cpuTotal);
+//            PdhCollectQueryData(cpuQuery);
+//        }
+
+//        double getCurrentValue(){
+//            PDH_FMT_COUNTERVALUE counterVal;
+//
+//            PdhCollectQueryData(cpuQuery);
+//            PdhGetFormattedCounterValue(cpuTotal, PDH_FMT_DOUBLE, NULL, &counterVal);
+//            return counterVal.doubleValue;
+//        }
     };
 
 }
